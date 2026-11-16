@@ -3,37 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chistes</title>
-  <link rel="stylesheet" href="style.css">  <!-- ⚙️ conecta el CSS -->
+  <title>Equipos de futbol</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header>
-    <input type="search" id="buscador" placeholder="buscar chiste">  <!-- 🟩 id usado en el JS -->
+    <input type="search" id="buscador" placeholder="Buscar por equipo o estadio">
 
-    <select id="filtroCategoria">  <!-- 🟩 id usado en el JS -->
-      <option value="">Todas las categorias</option>
-      <!-- 🟥 acá JS agrega las categorias que vengan de la API -->
+    <select id="filtroCompeticion">
+      <option value="PL">Premier League</option>
+      <option value="PD">La Liga</option>
+      <option value="SA">Serie A</option>
+      <option value="BL1">Bundesliga</option>
+      <option value="FL1">Ligue 1</option>
+      <option value="CL">Champions League</option>
+    </select>
+
+    <select id="filtroPais">
+      <option value="">Todos los paises</option>
     </select>
   </header>
 
-  <main class="chistes-container" id="chistesContainer">  <!-- 🟩 clase para el CSS, id para el JS -->
-    <!-- Contenido Dinamico -->
-  </main>
+  <p id="mensaje"></p>
 
-  <section class="agregar-chiste">  <!-- 🟩 clase para el CSS -->
-    <form id="agregarChisteForm">  <!-- 🟩 id usado en el JS -->
-      <h2>Agregar Chiste</h2>
+  <main class="equipos-container" id="equiposContainer"></main>
 
-      <label for="contenido">Chiste:</label>
-      <input type="text" id="contenido" placeholder="Escribi el chiste" required>
+  <section class="agregar-equipo">
+    <form id="agregarEquipoForm">
+      <h2>Agregar equipo</h2>
 
-      <label for="categoria">Categoria:</label>
-      <input type="text" id="categoria" placeholder="Categoria" required>
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" required>
+
+      <label for="estadio">Estadio</label>
+      <input type="text" id="estadio" required>
+
+      <label for="pais">Pais</label>
+      <input type="text" id="pais" required>
 
       <button type="submit">Agregar</button>
     </form>
   </section>
 
-  <script src="./main.js"></script>  <!-- ⚙️ al final, para que el HTML ya exista cuando corra el JS -->
+  <script src="./main.js"></script>
 </body>
 </html>

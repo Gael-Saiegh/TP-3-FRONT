@@ -1,4 +1,3 @@
-/* ---------- Base ---------- */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -7,12 +6,11 @@
   
   body {
     font-family: Arial, sans-serif;
-    background-color: #e5e5e5;          /* ⚙️ gris claro de fondo */
+    background-color: #e5e5e5;
     color: #222;
     padding: 20px;
   }
   
-  /* ---------- Buscador y filtro ---------- */
   header {
     display: flex;
     gap: 10px;
@@ -24,83 +22,84 @@
     flex: 1;
     min-width: 200px;
     padding: 10px;
-    border: 1px solid #999;             /* ⚙️ borde gris más oscuro */
-    border-radius: 8px;
+    border: 1px solid #999;
+    border-radius: 6px;
   }
   
-  #filtroCategoria {
+  #filtroCompeticion,
+  #filtroPais {
     padding: 10px;
     border: 1px solid #999;
-    border-radius: 8px;
-    background-color: #f5f5f5;          /* ⚙️ gris casi blanco */
+    border-radius: 6px;
+    background-color: #f5f5f5;
   }
   
-  /* ---------- Lista de tarjetas ---------- */
-  .chistes-container {
+  #mensaje {
+    margin-bottom: 15px;
+  }
+  
+  .equipos-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 15px;
     margin-bottom: 30px;
   }
   
   .card {
-    background-color: #f5f5f5;          /* ⚙️ tarjeta gris casi blanco, se despega del fondo */
+    background-color: #f5f5f5;
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .card img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 10px;
+  }
+  
+  .card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
   }
   
   .card p {
-    margin-bottom: 10px;
-    line-height: 1.4;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
   }
   
-  .card ul {
-    list-style: none;
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-  
-  .card li {
-    background-color: #cfcfcf;          /* ⚙️ etiquetas gris medio (antes eran azules) */
-    color: #333;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-  }
-  
-  /* ---------- Formulario ---------- */
-  .agregar-chiste {
+  .agregar-equipo {
     background-color: #f5f5f5;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 8px;
     max-width: 500px;
     margin: 0 auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }
   
-  .agregar-chiste form {
+  .agregar-equipo form {
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
   
-  .agregar-chiste input {
+  .agregar-equipo input {
     padding: 10px;
     border: 1px solid #999;
-    border-radius: 8px;
+    border-radius: 6px;
   }
   
-  .agregar-chiste button {
+  .agregar-equipo button {
     padding: 10px;
-    background-color: #555;             /* ⚙️ botón gris oscuro (antes violeta) */
+    background-color: #555;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
   }
   
-  .agregar-chiste button:hover {
-    background-color: #333;             /* ⚙️ se oscurece al pasar el mouse */
+  .agregar-equipo button:hover {
+    background-color: #333;
   }

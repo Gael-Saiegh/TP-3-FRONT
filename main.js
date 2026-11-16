@@ -1,98 +1,126 @@
-// ---------- 1. Variables ----------
+const URL_BASE = "https://api.football-data.org/v4"
+const TOKEN = "PEGA_TU_TOKEN_ACA"   // el token que te llega por mail al registrarte
+let equipos = []                    // aca se guardan los equipos que trae la API
 
-// 🟩 nombres que elegís vos
-const URL_BASE = "https://prod-main-api-704464-00tre1p1erm.compute.instacloud-edge.com/api/v1"  // ⚙️ Base URL de tu captura
-let chistes = []   // 🟪 array vacío: acá guardamos los datos cuando llegan de la API
+// elementos del html
+const buscador = document.getElementById("buscador")
+const filtroCompeticion = document.getElementById("filtroCompeticion")
+const filtroPais = document.getElementById("filtroPais")
+const mensaje = document.getElementById("mensaje")
+const equiposContainer = document.getElementById("equiposContainer")
+const agregarEquipoForm = document.getElementById("agregarEquipoForm")
 
-const buscador = document.getElementById("buscador")                     // 🟪 agarra el elemento del HTML por su id
-const filtroCategoria = document.getElementById("filtroCategoria")
-const chistesContainer = document.getElementById("chistesContainer")
-const agregarChisteForm = document.getElementById("agregarChisteForm")
 
+// pide los equipos de una liga a la API (codigo = PL, PD, etc)
+function cargarEquipos(codigo) {
+  mensaje.textContent = "Cargando equipos..."
 
-// ---------- 2. Traer los datos de la API ----------
-
-fetch(URL_BASE + "/public/randomjokes")   // 🟥 endpoint de LISTA: confirmalo probándolo en la página de la captura
-  .then(response => response.json())      // 🟪 convierte la respuesta en un objeto JS
-  .then(respuesta => {
-    console.log(respuesta)                // 🟨 mirá esto en la consola (F12) para ver la forma real de los datos
-    chistes = respuesta.data.data         // 🟥 ajustá según lo que veas en la consola
-    llenarCategorias(chistes)             // 🟦 función del bloque 4
-    mostrarChistes(chistes)               // 🟦 función del bloque 3
+  fetch(URL_BASE + "/competitions/" + codigo + "/teams", {
+    headers: { "X-Auth-Token": TOKEN }   // la API pide el token en este header
   })
-  .catch(error => {
-    console.error("Error al traer los chistes:", error)
-  })
+    .then(response => response.json())
+    .then(respuesta => {
+      console.log(respuesta)   // para ver en la consola como viene la respuesta
 
-
-// ---------- 3. Mostrar la lista ----------
-
-function mostrarChistes(lista) {            // 🟦 función; 🟩 nombre elegido por vos
-  chistesContainer.innerHTML = ""           // 🟪 vacía el contenedor para no duplicar tarjetas
-
-  lista.forEach(chiste => {                 // 🟪 chiste = cada elemento del array
-    chistesContainer.innerHTML += `
-      <article class="card">
-        <p>${chiste.content}</p>
-        <ul>
-          ${chiste.categories.map(cat => `<li>${cat}</li>`).join("")}
-        </ul>
-      </article>
-    `                                       // 🟨 content y categories vienen de la API
-  })
-}
-
-
-// ---------- 4. Llenar el select de categorias ----------
-
-function llenarCategorias(lista) {          // 🟦
-  const categorias = []                     // 🟩 acá juntamos las categorias sin repetir
-
-  lista.forEach(chiste => {
-    chiste.categories.forEach(cat => {      // 🟨 recorre el array de categorias de cada chiste
-      if (!categorias.includes(cat)) {      // 🟪 si todavía no la guardamos...
-        categorias.push(cat)                // ...la agregamos
+      // si no viene la lista, la API devolvio un error
+      if (!respuesta.teams) {
+        mensaje.textContent = "Error de la API: " + respuesta.message
+        return
       }
+
+      equipos = respuesta.teams
+      mensaje.textContent = ""
+      llenarPaises(equipos)
+      aplicarFiltros()
     })
-  })
+    .catch(error => {
+      console.error("Error al traer los equipos:", error)
+      mensaje.textContent = "No se pudo conectar con la API"
+    })
+}
 
-  categorias.forEach(cat => {
-    filtroCategoria.innerHTML += `<option value="${cat}">${cat}</option>`
+
+// dibuja las tarjetas
+function mostrarEquipos(lista) {
+  equiposContainer.innerHTML = ""
+
+  lista.forEach(equipo => {
+    equiposContainer.innerHTML += `
+      <article class="card">
+        ${equipo.crest ? `<img src="${equipo.crest}" alt="Escudo de ${equipo.name}">` : ""}
+        <h2>${equipo.name}</h2>
+        <p>Estadio: ${equipo.venue}</p>
+        <p>Fundado: ${equipo.founded}</p>
+        <p>${equipo.area.name}</p>
+      </article>
+    `
   })
 }
 
 
-// ---------- 5. Buscar y filtrar juntos ----------
+// carga el select de paises con los que aparecen en los equipos (sin repetir)
+function llenarPaises(lista) {
+  filtroPais.innerHTML = `<option value="">Todos los paises</option>`
 
-function aplicarFiltros() {                 // 🟦
-  const texto = buscador.value.toLowerCase()   // 🟪 lo que escribió, en minúscula
-  const categoria = filtroCategoria.value      // ⚙️ "" si eligió "Todas las categorias"
+  const paises = []
 
-  const filtrados = chistes.filter(chiste => {
-    const coincideTexto = chiste.content.toLowerCase().includes(texto)
-    const coincideCategoria = categoria === "" || chiste.categories.includes(categoria)  // 🟪 "" = no filtrar
-
-    return coincideTexto && coincideCategoria  // 🟪 tienen que cumplirse las DOS
+  lista.forEach(equipo => {
+    if (!paises.includes(equipo.area.name)) {
+      paises.push(equipo.area.name)
+    }
   })
 
-  mostrarChistes(filtrados)
+  paises.forEach(pais => {
+    filtroPais.innerHTML += `<option value="${pais}">${pais}</option>`
+  })
 }
 
-buscador.addEventListener("input", aplicarFiltros)           // ⚙️ "input" = cada letra que escribe
-filtroCategoria.addEventListener("change", aplicarFiltros)   // ⚙️ "change" = cuando elige otra opción
+
+// aplica el buscador y el filtro de pais al mismo tiempo
+function aplicarFiltros() {
+  const texto = buscador.value.toLowerCase()
+  const pais = filtroPais.value
+
+  const filtrados = equipos.filter(equipo => {
+    const coincideTexto =
+      equipo.name.toLowerCase().includes(texto) ||
+      (equipo.venue || "").toLowerCase().includes(texto)   // si no tiene estadio usa texto vacio
+    const coincidePais = pais === "" || equipo.area.name === pais
+
+    return coincideTexto && coincidePais
+  })
+
+  mostrarEquipos(filtrados)
+}
 
 
-// ---------- 6. Agregar un chiste ----------
+// eventos
+buscador.addEventListener("input", aplicarFiltros)
+filtroPais.addEventListener("change", aplicarFiltros)
 
-agregarChisteForm.addEventListener("submit", (event) => {
-  event.preventDefault()                    // 🟪 evita que la página se recargue
+// al cambiar de liga se vuelve a pedir a la API
+filtroCompeticion.addEventListener("change", () => {
+  cargarEquipos(filtroCompeticion.value)
+})
 
-  const nuevoChiste = {
-    content: event.target.contenido.value,          // 🟩 el id="contenido" del HTML
-    categories: [event.target.categoria.value]      // 🟪 array con una sola categoria
+// agrega un equipo a mano (solo queda en la pagina, no en la API)
+agregarEquipoForm.addEventListener("submit", (event) => {
+  event.preventDefault()
+
+  const nuevoEquipo = {
+    name: event.target.nombre.value,
+    venue: event.target.estadio.value,
+    founded: "-",
+    crest: "",
+    area: { name: event.target.pais.value }
   }
 
-  chistes.push(nuevoChiste)                 // 🟪 se agrega al array (solo en tu página, no en la API)
-  aplicarFiltros()                          // 🟦 vuelve a mostrar respetando buscador y filtro
-  event.target.reset()                      // 🟪 limpia el formulario
+  equipos.push(nuevoEquipo)
+  llenarPaises(equipos)
+  aplicarFiltros()
+  event.target.reset()
 })
+
+
+// al abrir la pagina carga la liga que esta seleccionada
+cargarEquipos(filtroCompeticion.value)
