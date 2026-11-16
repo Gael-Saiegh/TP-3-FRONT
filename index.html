@@ -1,1 +1,28 @@
-dd
+<header>
+    <input type="search" id="buscador" placeholder="buscar chiste">  <!-- 🟩 id que elegís vos -->
+  
+    <select id="filtroCategoria">  <!-- 🟩 id que elegís vos -->
+      <option value="">Todas las categorias</option>
+      <!-- 🟥 aca van las opciones, las crea JS con lo que venga de la API -->
+    </select>
+  </header>
+  
+  <main class="comida-container" id="chistesContainer">  <!-- 🟩 cambié el id -->
+    <!-- Contenido Dinamico -->
+  </main>
+  
+  <section class="addFood">
+    <form id="agregarChisteForm">  <!-- 🟩 cambié el id -->
+      <h2>Agregar Chiste</h2>
+  
+      <label for="contenido">Chiste:</label>
+      <input type="text" id="contenido" placeholder="Escribi el chiste" required>
+  
+      <label for="categoria">Categoria:</label>
+      <input type="text" id="categoria" placeholder="Categoria" required>
+  
+      <button type="submit">Agregar</button>
+    </form>
+  </section>
+  
+  <script src="./main.js"></script>
