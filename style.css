@@ -1,142 +1,106 @@
-* {                                   /* 🟪 "*" = todos los elementos de la página */
-    box-sizing: border-box;             /* ⚙️ el padding y el borde NO agrandan el ancho de la caja */
-    margin: 0;                          /* ⚙️ saca los márgenes que el navegador pone por defecto */
-    padding: 0;                         /* ⚙️ lo mismo con el padding */
+/* ---------- Base ---------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
   }
   
   body {
-    font-family: Arial, sans-serif;     /* ⚙️ tipo de letra (si no existe Arial, usa otra sin serif) */
-    background-color: #f4f4f8;          /* ⚙️ gris clarito de fondo */
-    color: #222;                        /* ⚙️ color del texto: casi negro */
-    padding: 20px;                      /* ⚙️ espacio entre el borde de la pantalla y el contenido */
+    font-family: Arial, sans-serif;
+    background-color: #e5e5e5;          /* ⚙️ gris claro de fondo */
+    color: #222;
+    padding: 20px;
   }
-
-
-
-
-
-
+  
+  /* ---------- Buscador y filtro ---------- */
   header {
-    display: flex;                      /* 🟪 flex = pone los hijos (buscador y select) en fila */
-    gap: 10px;                          /* ⚙️ espacio entre el buscador y el select */
-    margin-bottom: 20px;                /* ⚙️ espacio hacia abajo, antes de las tarjetas */
-    flex-wrap: wrap;                    /* ⚙️ si no entran en una fila, bajan a la siguiente (celular) */
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
   }
   
-  #buscador {                           /* 🟩 el "#" apunta al id="buscador" de tu HTML */
-    flex: 1;                            /* 🟪 ocupa todo el espacio que sobre en la fila */
-    min-width: 200px;                   /* ⚙️ nunca más angosto que 200px */
-    padding: 10px;                      /* ⚙️ espacio interno, para que no quede apretado */
-    border: 1px solid #ccc;             /* ⚙️ borde finito gris */
-    border-radius: 8px;                 /* ⚙️ esquinas redondeadas */
-  }
-  
-  #filtroCategoria {                    /* 🟩 el id="filtroCategoria" de tu HTML */
+  #buscador {
+    flex: 1;
+    min-width: 200px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #999;             /* ⚙️ borde gris más oscuro */
     border-radius: 8px;
-    background-color: white;
   }
-
-
-
-
-
-
-
-
-
-  .comida-container {                   /* 🟩 el "." apunta al class="comida-container" de tu HTML */
-    display: grid;                      /* 🟪 grid = acomoda los hijos en una grilla (filas y columnas) */
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  /* ⚙️ ver explicación abajo */
-    gap: 15px;                          /* ⚙️ espacio entre tarjetas */
+  
+  #filtroCategoria {
+    padding: 10px;
+    border: 1px solid #999;
+    border-radius: 8px;
+    background-color: #f5f5f5;          /* ⚙️ gris casi blanco */
+  }
+  
+  /* ---------- Lista de tarjetas ---------- */
+  .chistes-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
     margin-bottom: 30px;
   }
-
-
-
-
-
-
-
-
-
-
-  .card {                               /* 🟩 el class="card" que creás en mostrarChistes() */
-    background-color: white;
+  
+  .card {
+    background-color: #f5f5f5;          /* ⚙️ tarjeta gris casi blanco, se despega del fondo */
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);   /* ⚙️ sombrita: horizontal, vertical, difuminado, color */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
   
-  .card p {                             /* 🟪 ".card p" = solo los <p> que están DENTRO de una .card */
-    margin-bottom: 10px;                /* ⚙️ espacio entre el chiste y las categorías */
-    line-height: 1.4;                   /* ⚙️ altura de línea: texto más cómodo de leer */
+  .card p {
+    margin-bottom: 10px;
+    line-height: 1.4;
   }
   
   .card ul {
-    list-style: none;                   /* ⚙️ saca los puntitos de la lista */
-    display: flex;                      /* 🟪 los <li> quedan uno al lado del otro */
+    list-style: none;
+    display: flex;
     gap: 6px;
     flex-wrap: wrap;
   }
   
-  .card li {                            /* 🟨 estos <li> son las categorias que vienen de la API */
-    background-color: #e0e7ff;          /* ⚙️ fondo azul clarito, queda como "etiqueta" */
-    color: #3730a3;
+  .card li {
+    background-color: #cfcfcf;          /* ⚙️ etiquetas gris medio (antes eran azules) */
+    color: #333;
     padding: 3px 10px;
-    border-radius: 20px;                /* ⚙️ muy redondeado = forma de píldora */
+    border-radius: 20px;
     font-size: 0.85rem;
   }
-
-
-
-
-
-
-
-
-
-
-  .addFood {                            /* 🟩 el class="addFood" de tu <section> */
-    background-color: white;
+  
+  /* ---------- Formulario ---------- */
+  .agregar-chiste {
+    background-color: #f5f5f5;
     padding: 20px;
     border-radius: 10px;
-    max-width: 500px;                   /* ⚙️ el formulario no se estira más de 500px */
-    margin: 0 auto;                     /* 🟪 "auto" a los lados = centra la caja */
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
   
-  .addFood form {
+  .agregar-chiste form {
     display: flex;
-    flex-direction: column;             /* 🟪 en columna: un campo debajo del otro */
+    flex-direction: column;
     gap: 10px;
   }
   
-  .addFood input {                      /* 🟪 todos los <input> dentro de .addFood */
+  .agregar-chiste input {
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #999;
     border-radius: 8px;
   }
   
-  .addFood button {
+  .agregar-chiste button {
     padding: 10px;
-    background-color: #4f46e5;
+    background-color: #555;             /* ⚙️ botón gris oscuro (antes violeta) */
     color: white;
     border: none;
     border-radius: 8px;
-    cursor: pointer;                    /* ⚙️ la manito al pasar el mouse */
+    cursor: pointer;
   }
   
-  .addFood button:hover {               /* 🟪 ":hover" = cuando el mouse está encima */
-    background-color: #3730a3;          /* ⚙️ se oscurece un poco */
+  .agregar-chiste button:hover {
+    background-color: #333;             /* ⚙️ se oscurece al pasar el mouse */
   }
-
-
-
-
-
-
-
-
-  

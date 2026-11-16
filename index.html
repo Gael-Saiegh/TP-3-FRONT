@@ -1,28 +1,39 @@
-<header>
-    <input type="search" id="buscador" placeholder="buscar chiste">  <!-- 🟩 id que elegís vos -->
-  
-    <select id="filtroCategoria">  <!-- 🟩 id que elegís vos -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chistes</title>
+  <link rel="stylesheet" href="style.css">  <!-- ⚙️ conecta el CSS -->
+</head>
+<body>
+  <header>
+    <input type="search" id="buscador" placeholder="buscar chiste">  <!-- 🟩 id usado en el JS -->
+
+    <select id="filtroCategoria">  <!-- 🟩 id usado en el JS -->
       <option value="">Todas las categorias</option>
-      <!-- 🟥 aca van las opciones, las crea JS con lo que venga de la API -->
+      <!-- 🟥 acá JS agrega las categorias que vengan de la API -->
     </select>
   </header>
-  
-  <main class="comida-container" id="chistesContainer">  <!-- 🟩 cambié el id -->
+
+  <main class="chistes-container" id="chistesContainer">  <!-- 🟩 clase para el CSS, id para el JS -->
     <!-- Contenido Dinamico -->
   </main>
-  
-  <section class="addFood">
-    <form id="agregarChisteForm">  <!-- 🟩 cambié el id -->
+
+  <section class="agregar-chiste">  <!-- 🟩 clase para el CSS -->
+    <form id="agregarChisteForm">  <!-- 🟩 id usado en el JS -->
       <h2>Agregar Chiste</h2>
-  
+
       <label for="contenido">Chiste:</label>
       <input type="text" id="contenido" placeholder="Escribi el chiste" required>
-  
+
       <label for="categoria">Categoria:</label>
       <input type="text" id="categoria" placeholder="Categoria" required>
-  
+
       <button type="submit">Agregar</button>
     </form>
   </section>
-  
-  <script src="./main.js"></script>
+
+  <script src="./main.js"></script>  <!-- ⚙️ al final, para que el HTML ya exista cuando corra el JS -->
+</body>
+</html>
