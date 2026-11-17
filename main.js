@@ -1,36 +1,54 @@
-const URL_BASE = "https://api.football-data.org/v4"
-const TOKEN = "PEGA_TU_TOKEN_ACA"   // el token que te llega por mail al registrarte
-let equipos = []                    // aca se guardan los equipos que trae la API
+const URL_BASE = "https://www.thesportsdb.com/api/v1/json/"
+const CLAVE = "3"   // clave gratuita de prueba de la API
+let equipos = []    // aca se guardan los equipos que trae la API
+
+// nombre que se muestra : nombre que entiende la API
+const ligas = {
+  "Premier League": "English Premier League",
+  "La Liga": "Spanish La Liga",
+  "Serie A": "Italian Serie A",
+  "Bundesliga": "German Bundesliga",
+  "Ligue 1": "French Ligue 1"
+}
 
 // elementos del html
 const buscador = document.getElementById("buscador")
-const filtroCompeticion = document.getElementById("filtroCompeticion")
-const filtroPais = document.getElementById("filtroPais")
+const filtroLiga = document.getElementById("filtroLiga")
+const ordenar = document.getElementById("ordenar")
 const mensaje = document.getElementById("mensaje")
 const equiposContainer = document.getElementById("equiposContainer")
 const agregarEquipoForm = document.getElementById("agregarEquipoForm")
 
 
-// pide los equipos de una liga a la API (codigo = PL, PD, etc)
-function cargarEquipos(codigo) {
+// arma las opciones del select a partir del objeto ligas
+function llenarLigas() {
+  Object.keys(ligas).forEach(nombre => {
+    filtroLiga.innerHTML += `<option value="${ligas[nombre]}">${nombre}</option>`
+  })
+}
+
+
+// pide los equipos de una liga a la API
+function cargarEquipos(liga) {
   mensaje.textContent = "Cargando equipos..."
 
-  fetch(URL_BASE + "/competitions/" + codigo + "/teams", {
-    headers: { "X-Auth-Token": TOKEN }   // la API pide el token en este header
-  })
+  const nombreLiga = liga.replaceAll(" ", "_")   // la API usa guion bajo en vez de espacios
+
+  fetch(URL_BASE + CLAVE + "/search_all_teams.php?l=" + nombreLiga)
     .then(response => response.json())
     .then(respuesta => {
       console.log(respuesta)   // para ver en la consola como viene la respuesta
 
-      // si no viene la lista, la API devolvio un error
+      // si no viene la lista, esa liga no devolvio equipos
       if (!respuesta.teams) {
-        mensaje.textContent = "Error de la API: " + respuesta.message
+        equipos = []
+        mostrarEquipos(equipos)
+        mensaje.textContent = "No se encontraron equipos"
         return
       }
 
       equipos = respuesta.teams
       mensaje.textContent = ""
-      llenarPaises(equipos)
       aplicarFiltros()
     })
     .catch(error => {
@@ -47,48 +65,34 @@ function mostrarEquipos(lista) {
   lista.forEach(equipo => {
     equiposContainer.innerHTML += `
       <article class="card">
-        ${equipo.crest ? `<img src="${equipo.crest}" alt="Escudo de ${equipo.name}">` : ""}
-        <h2>${equipo.name}</h2>
-        <p>Estadio: ${equipo.venue}</p>
-        <p>Fundado: ${equipo.founded}</p>
-        <p>${equipo.area.name}</p>
+        ${equipo.strTeamBadge ? `<img src="${equipo.strTeamBadge}" alt="Escudo de ${equipo.strTeam}">` : ""}
+        <h2>${equipo.strTeam}</h2>
+        <p>Estadio: ${equipo.strStadium}</p>
+        <p>Fundado: ${equipo.intFormedYear}</p>
+        <p>${equipo.strCountry}</p>
       </article>
     `
   })
 }
 
 
-// carga el select de paises con los que aparecen en los equipos (sin repetir)
-function llenarPaises(lista) {
-  filtroPais.innerHTML = `<option value="">Todos los paises</option>`
-
-  const paises = []
-
-  lista.forEach(equipo => {
-    if (!paises.includes(equipo.area.name)) {
-      paises.push(equipo.area.name)
-    }
-  })
-
-  paises.forEach(pais => {
-    filtroPais.innerHTML += `<option value="${pais}">${pais}</option>`
-  })
-}
-
-
-// aplica el buscador y el filtro de pais al mismo tiempo
+// aplica el buscador y el orden al mismo tiempo
 function aplicarFiltros() {
   const texto = buscador.value.toLowerCase()
-  const pais = filtroPais.value
 
   const filtrados = equipos.filter(equipo => {
-    const coincideTexto =
-      equipo.name.toLowerCase().includes(texto) ||
-      (equipo.venue || "").toLowerCase().includes(texto)   // si no tiene estadio usa texto vacio
-    const coincidePais = pais === "" || equipo.area.name === pais
-
-    return coincideTexto && coincidePais
+    return (
+      equipo.strTeam.toLowerCase().includes(texto) ||
+      (equipo.strStadium || "").toLowerCase().includes(texto)   // si no tiene estadio usa texto vacio
+    )
   })
+
+  // ordena segun lo elegido
+  if (ordenar.value === "nombre") {
+    filtrados.sort((a, b) => a.strTeam.localeCompare(b.strTeam))
+  } else {
+    filtrados.sort((a, b) => Number(a.intFormedYear) - Number(b.intFormedYear))
+  }
 
   mostrarEquipos(filtrados)
 }
@@ -96,31 +100,11 @@ function aplicarFiltros() {
 
 // eventos
 buscador.addEventListener("input", aplicarFiltros)
-filtroPais.addEventListener("change", aplicarFiltros)
+ordenar.addEventListener("change", aplicarFiltros)
 
 // al cambiar de liga se vuelve a pedir a la API
-filtroCompeticion.addEventListener("change", () => {
-  cargarEquipos(filtroCompeticion.value)
+filtroLiga.addEventListener("change", () => {
+  cargarEquipos(filtroLiga.value)
 })
 
-// agrega un equipo a mano (solo queda en la pagina, no en la API)
-agregarEquipoForm.addEventListener("submit", (event) => {
-  event.preventDefault()
-
-  const nuevoEquipo = {
-    name: event.target.nombre.value,
-    venue: event.target.estadio.value,
-    founded: "-",
-    crest: "",
-    area: { name: event.target.pais.value }
-  }
-
-  equipos.push(nuevoEquipo)
-  llenarPaises(equipos)
-  aplicarFiltros()
-  event.target.reset()
-})
-
-
-// al abrir la pagina carga la liga que esta seleccionada
-cargarEquipos(filtroCompeticion.value)
+//

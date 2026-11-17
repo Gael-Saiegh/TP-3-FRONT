@@ -8,23 +8,17 @@
 </head>
 <body>
   <header>
-    <input type="search" id="buscador" placeholder="Buscar por equipo o estadio">
+    <input type="search" id="buscador" class="buscador" placeholder="Buscar por equipo o estadio">
 
-    <select id="filtroCompeticion">
-      <option value="PL">Premier League</option>
-      <option value="PD">La Liga</option>
-      <option value="SA">Serie A</option>
-      <option value="BL1">Bundesliga</option>
-      <option value="FL1">Ligue 1</option>
-      <option value="CL">Champions League</option>
-    </select>
+    <select id="filtroLiga" class="select"></select>
 
-    <select id="filtroPais">
-      <option value="">Todos los paises</option>
+    <select id="ordenar" class="select">
+      <option value="nombre">Ordenar por nombre</option>
+      <option value="fundacion">Ordenar por fundacion</option>
     </select>
   </header>
 
-  <p id="mensaje"></p>
+  <p id="mensaje" class="mensaje"></p>
 
   <main class="equipos-container" id="equiposContainer"></main>
 
