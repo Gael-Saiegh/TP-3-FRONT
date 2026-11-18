@@ -1,8 +1,6 @@
 const URL_BASE = "https://www.thesportsdb.com/api/v1/json/"
-const CLAVE = "123"   // clave gratuita de prueba de la API
-let equipos = []    // aca se guardan los equipos que trae la API
-
-// nombre que se muestra : nombre que entiende la API
+const CLAVE = "123"   /* esta es la clave de la api *//
+let equipos = []    
 const ligas = {
   "Premier League": "English Premier League",
   "La Liga": "Spanish La Liga",
@@ -11,7 +9,16 @@ const ligas = {
   "Ligue 1": "French Ligue 1"
 }
 
-// elementos del html
+
+const logosLigas = {
+  "English Premier League": "premierleague.png",
+  "Spanish La Liga": "LaLiga.png",
+  "Italian Serie A": "serieA.png",
+  "German Bundesliga": "bundesliga.png",
+  "French Ligue 1": "LigueOne.png"
+}
+
+
 const buscador = document.getElementById("buscador")
 const filtroLiga = document.getElementById("filtroLiga")
 const ordenar = document.getElementById("ordenar")
@@ -20,26 +27,25 @@ const equiposContainer = document.getElementById("equiposContainer")
 const agregarEquipoForm = document.getElementById("agregarEquipoForm")
 
 
-// arma las opciones del select a partir del objeto ligas
+
 function llenarLigas() {
-  Object.keys(ligas).forEach(nombre => {
+  for (const nombre in ligas) {
     filtroLiga.innerHTML += `<option value="${ligas[nombre]}">${nombre}</option>`
-  })
+  }
 }
 
-
-// pide los equipos de una liga a la API
+/*para pedir los equipos de las ligas a la api*/
 function cargarEquipos(liga) {
   mensaje.textContent = "Cargando equipos..."
 
-  const nombreLiga = liga.replaceAll(" ", "_")   // la API usa guion bajo en vez de espacios
+  const nombreLiga = liga.replaceAll(" ", "_")  
 
   fetch(URL_BASE + CLAVE + "/search_all_teams.php?l=" + nombreLiga)
     .then(response => response.json())
     .then(respuesta => {
-      console.log(respuesta)   // para ver en la consola como viene la respuesta
+      console.log(respuesta)   
 
-      // si no viene la lista, esa liga no devolvio equipos
+      
       if (!respuesta.teams) {
         equipos = []
         mostrarEquipos(equipos)
@@ -58,14 +64,18 @@ function cargarEquipos(liga) {
 }
 
 
-// dibuja las tarjetas
+/*para dibujar las card de los equipos*/
 function mostrarEquipos(lista) {
   equiposContainer.innerHTML = ""
+  
+  /* logoo de la liga*/
+  const logoLigaActual = logosLigas[filtroLiga.value] || ""
 
   lista.forEach(equipo => {
     equiposContainer.innerHTML += `
       <article class="card">
-        ${equipo.strTeamBadge ? `<img src="${equipo.strTeamBadge}" alt="Escudo de ${equipo.strTeam}">` : ""}
+        ${logoLigaActual ? `<img src="${logoLigaActual}" alt="Logo de la liga" class="logo-liga">` : ""}
+        ${equipo.strBadge ? `<img src="${equipo.strBadge}" alt="Escudo de ${equipo.strTeam}" class="escudo-equipo">` : ""}
         <h2>${equipo.strTeam}</h2>
         <p>Estadio: ${equipo.strStadium}</p>
         <p>Fundado: ${equipo.intFormedYear}</p>
@@ -76,7 +86,7 @@ function mostrarEquipos(lista) {
 }
 
 
-// aplica el buscador y el orden al mismo tiempo
+
 function aplicarFiltros() {
   const texto = buscador.value.toLowerCase()
 
@@ -87,7 +97,7 @@ function aplicarFiltros() {
     )
   })
 
-  // ordena segun lo elegido
+
   if (ordenar.value === "nombre") {
     filtrados.sort((a, b) => a.strTeam.localeCompare(b.strTeam))
   } else {
@@ -98,16 +108,16 @@ function aplicarFiltros() {
 }
 
 
-// eventos
+
 buscador.addEventListener("input", aplicarFiltros)
 ordenar.addEventListener("change", aplicarFiltros)
 
-// al cambiar de liga se vuelve a pedir a la API
+
 filtroLiga.addEventListener("change", () => {
   cargarEquipos(filtroLiga.value)
 })
 
-// agrega un equipo a mano (solo queda en la pagina, no en la API)
+/*agregar un equipo*/
 agregarEquipoForm.addEventListener("submit", (event) => {
   event.preventDefault()
 
@@ -115,7 +125,7 @@ agregarEquipoForm.addEventListener("submit", (event) => {
     strTeam: event.target.nombre.value,
     strStadium: event.target.estadio.value,
     intFormedYear: "-",
-    strTeamBadge: "",
+    strBadge: "",   
     strCountry: event.target.pais.value
   }
 
@@ -125,6 +135,6 @@ agregarEquipoForm.addEventListener("submit", (event) => {
 })
 
 
-// al abrir la pagina arma el select y carga la primera liga
+
 llenarLigas()
 cargarEquipos(filtroLiga.value)

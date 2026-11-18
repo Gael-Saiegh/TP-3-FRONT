@@ -1,5 +1,3 @@
-
-
 /* la pagina ocupa la pantalla y no scrollea */
 body {
   box-sizing: border-box;
@@ -78,6 +76,12 @@ header {
   gap: 0.9rem;
 }
 
+.equipos-container :hover {
+  transition: 250ms;
+  background: #2a9b42;
+  background: linear-gradient(146deg, rgba(42, 155, 66, 1) 0%, rgba(46, 117, 61, 1) 100%);
+}
+
 .card {
   background: #2a9b42;
   background: linear-gradient(146deg, rgba(42, 155, 66, 1) 0%, rgba(62, 222, 97, 1) 100%);
@@ -87,20 +91,29 @@ header {
   border-style: double;
   box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
   text-align: center;
+  
+  /* Para que el logo de la liga se posicione respecto a la tarjeta */
+  position: relative; 
 }
 
-.card :hover {
-  transition: 250ms;
-  background: #2a9b42;
-  background: linear-gradient(146deg, rgba(42, 155, 66, 1) 0%, rgba(46, 117, 61, 1) 100%);
-  padding: 2rem;
+/* Estilo para el logo de la liga */
+.card .logo-liga {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
 }
 
-.card img {
+/* Estilo para el escudo del equipo */
+.card .escudo-equipo {
   width: 3.75rem;
   height: 3.75rem;
   object-fit: contain;
   margin-bottom: 0.625rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card h2 {
@@ -120,7 +133,10 @@ header {
   max-width: 75rem;
   margin: 0 auto;
   padding: 1rem 1.25rem;
-  background-color: #f5f5f5;
+  border-color: black;
+  border-style: double;
+  background: #0d6a8f;
+  background: linear-gradient(180deg, rgba(13, 106, 143, 1) 4%, rgba(11, 217, 210, 1) 80%);
   border-radius: 0.5rem;
   box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
 }
