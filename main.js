@@ -1,5 +1,5 @@
 const URL_BASE = "https://www.thesportsdb.com/api/v1/json/"
-const CLAVE = "3"   // clave gratuita de prueba de la API
+const CLAVE = "123"   // clave gratuita de prueba de la API
 let equipos = []    // aca se guardan los equipos que trae la API
 
 // nombre que se muestra : nombre que entiende la API
@@ -107,4 +107,24 @@ filtroLiga.addEventListener("change", () => {
   cargarEquipos(filtroLiga.value)
 })
 
-//
+// agrega un equipo a mano (solo queda en la pagina, no en la API)
+agregarEquipoForm.addEventListener("submit", (event) => {
+  event.preventDefault()
+
+  const nuevoEquipo = {
+    strTeam: event.target.nombre.value,
+    strStadium: event.target.estadio.value,
+    intFormedYear: "-",
+    strTeamBadge: "",
+    strCountry: event.target.pais.value
+  }
+
+  equipos.push(nuevoEquipo)
+  aplicarFiltros()
+  event.target.reset()
+})
+
+
+// al abrir la pagina arma el select y carga la primera liga
+llenarLigas()
+cargarEquipos(filtroLiga.value)

@@ -8,7 +8,10 @@
 </head>
 <body>
   <header>
-    <input type="search" id="buscador" class="buscador" placeholder="Buscar por equipo o estadio">
+    <div class="buscador-caja">
+      <img src="lupita.png" alt="lupita-foto" class="buscador-icono">
+      <input type="search" id="buscador" class="buscador" placeholder="Buscar por equipo o estadio">
+    </div>
 
     <select id="filtroLiga" class="select"></select>
 
@@ -23,17 +26,22 @@
   <main class="equipos-container" id="equiposContainer"></main>
 
   <section class="agregar-equipo">
+    <h2>Agregar equipo</h2>
+
     <form id="agregarEquipoForm">
-      <h2>Agregar equipo</h2>
+      <div class="campo">
+     
+        <input type="text" id="nombre" required placeholder="ingrese el nombre del equipo">
+      </div>
 
-      <label for="nombre">Nombre</label>
-      <input type="text" id="nombre" required>
+      <div class="campo">
+        <input type="text" id="estadio" required placeholder="ingrese el nombre de su estadio">
+      </div>
 
-      <label for="estadio">Estadio</label>
-      <input type="text" id="estadio" required>
-
-      <label for="pais">Pais</label>
-      <input type="text" id="pais" required>
+      <div class="campo">
+        
+        <input type="text" id="pais" required placeholder="ingrese el pais del equipo">
+      </div>
 
       <button type="submit">Agregar</button>
     </form>

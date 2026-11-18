@@ -1,95 +1,167 @@
+
+
+/* la pagina ocupa la pantalla y no scrollea */
 body {
+  box-sizing: border-box;
+  height: 100vh;
+  
+  margin: 0;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: hidden;
   font-family: Arial, sans-serif;
-  background-color: #e5e5e5;
-  color: #222;
-  padding: 20px;
+  background: #2A7B9B;
+  background: linear-gradient(146deg, rgba(42, 123, 155, 1) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 header {
   display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 0.625rem;
   flex-wrap: wrap;
 }
 
-.buscador {
+/* caja del buscador con la lupa adentro */
+.buscador-caja {
+  position: relative;
+  display: flex;
   flex: 1;
-  min-width: 200px;
-  padding: 10px;
-  border: 1px solid #999;
-  border-radius: 6px;
+  min-width: 12rem;
+}
+
+.buscador-icono {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.1rem;
+  pointer-events: none;
+}
+
+.buscador {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  padding: 0.625rem 0.625rem 0.625rem 2.5rem;
+  font-size: 1rem;
+  border: 0.0625rem solid #999;
+  border-radius: 0.375rem;
 }
 
 .select {
-  padding: 10px;
-  border: 1px solid #999;
-  border-radius: 6px;
+  box-sizing: border-box;
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 0.0625rem solid #999;
+  border-radius: 0.375rem;
   background-color: #f5f5f5;
 }
 
 .mensaje {
-  margin-bottom: 15px;
+  margin: 0;
 }
 
+/* si el mensaje esta vacio no ocupa espacio */
+.mensaje:empty {
+  display: none;
+}
+
+/* la lista ocupa el espacio que sobra y scrollea por dentro */
 .equipos-container {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 15px;
-  margin-bottom: 30px;
+  grid-template-columns: repeat(auto-fill, minmax(13rem, 1fr));
+  align-content: start;
+  gap: 0.9rem;
 }
 
 .card {
-  background-color: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  background: #2a9b42;
+  background: linear-gradient(146deg, rgba(42, 155, 66, 1) 0%, rgba(62, 222, 97, 1) 100%);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-color: black;
+  border-style: double;
+  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
   text-align: center;
 }
 
+.card :hover {
+  transition: 250ms;
+  background: #2a9b42;
+  background: linear-gradient(146deg, rgba(42, 155, 66, 1) 0%, rgba(46, 117, 61, 1) 100%);
+  padding: 2rem;
+}
+
 .card img {
-  width: 60px;
-  height: 60px;
+  width: 3.75rem;
+  height: 3.75rem;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 0.625rem;
 }
 
 .card h2 {
+  margin: 0 0 0.5rem;
   font-size: 1.1rem;
-  margin-bottom: 8px;
 }
 
 .card p {
+  margin: 0 0 0.25rem;
   font-size: 0.9rem;
-  margin-bottom: 4px;
 }
 
+/* formulario rectangular y ancho */
 .agregar-equipo {
-  background-color: #f5f5f5;
-  padding: 20px;
-  border-radius: 8px;
-  max-width: 500px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 75rem;
   margin: 0 auto;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  padding: 1rem 1.25rem;
+  background-color: #f5f5f5;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
 }
 
+.agregar-equipo h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* los 3 campos y el boton van en una fila; si no entran, bajan solos */
 .agregar-equipo form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  align-items: end;
+  gap: 0.75rem;
+}
+
+/* cada etiqueta queda arriba de su campo */
+.campo {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.25rem;
+  font-size: 0.9rem;
 }
 
 .agregar-equipo input {
-  padding: 10px;
-  border: 1px solid #999;
-  border-radius: 6px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 0.0625rem solid #999;
+  border-radius: 0.375rem;
 }
 
 .agregar-equipo button {
-  padding: 10px;
+  padding: 0.7rem;
+  font-size: 1rem;
   background-color: #555;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   cursor: pointer;
 }
 
