@@ -1,6 +1,7 @@
 const URL_BASE = "https://www.thesportsdb.com/api/v1/json/"
-const CLAVE = "123"   /* esta es la clave de la api */
+const CLAVE = "123"   // esta es la clave de la api
 let equipos = []    
+
 const ligas = {
   "Premier League": "English Premier League",
   "La Liga": "Spanish La Liga",
@@ -8,7 +9,6 @@ const ligas = {
   "Bundesliga": "German Bundesliga",
   "Ligue 1": "French Ligue 1"
 }
-
 
 const logosLigas = {
   "English Premier League": "premierleague.png",
@@ -18,7 +18,6 @@ const logosLigas = {
   "French Ligue 1": "LigueOne.png"
 }
 
-
 const buscador = document.getElementById("buscador")
 const filtroLiga = document.getElementById("filtroLiga")
 const ordenar = document.getElementById("ordenar")
@@ -26,7 +25,8 @@ const mensaje = document.getElementById("mensaje")
 const equiposContainer = document.getElementById("equiposContainer")
 const agregarEquipoForm = document.getElementById("agregarEquipoForm")
 
-
+// 3. Cambio de nombre de la variable
+const archivoImagen = document.getElementById("logo")
 
 function llenarLigas() {
   for (const nombre in ligas) {
@@ -45,7 +45,6 @@ function cargarEquipos(liga) {
     .then(respuesta => {
       console.log(respuesta)   
 
-      
       if (!respuesta.teams) {
         equipos = []
         mostrarEquipos(equipos)
@@ -63,12 +62,10 @@ function cargarEquipos(liga) {
     })
 }
 
-
 /*para dibujar las card de los equipos*/
 function mostrarEquipos(lista) {
   equiposContainer.innerHTML = ""
   
-  /* logoo de la liga*/
   const logoLigaActual = logosLigas[filtroLiga.value] || ""
 
   lista.forEach(equipo => {
@@ -85,18 +82,20 @@ function mostrarEquipos(lista) {
   })
 }
 
-
-
 function aplicarFiltros() {
   const texto = buscador.value.toLowerCase()
 
+  // 2. Uso de filter() para limpiar el texto
+  // (Se mantiene el filter principal de equipos y adentro usamos filter para limpiar)
   const filtrados = equipos.filter(equipo => {
+    const nombreLimpio = [equipo.strTeam].filter(Boolean)[0].toLowerCase()
+    const estadioLimpio = [equipo.strStadium].filter(Boolean)[0]?.toLowerCase() || ""
+    
     return (
-      equipo.strTeam.toLowerCase().includes(texto) ||
-      (equipo.strStadium || "").toLowerCase().includes(texto)   // si no tiene estadio usa texto vacio
+      nombreLimpio.includes(texto) ||
+      estadioLimpio.includes(texto)   
     )
   })
-
 
   if (ordenar.value === "nombre") {
     filtrados.sort((a, b) => a.strTeam.localeCompare(b.strTeam))
@@ -107,11 +106,8 @@ function aplicarFiltros() {
   mostrarEquipos(filtrados)
 }
 
-
-
 buscador.addEventListener("input", aplicarFiltros)
 ordenar.addEventListener("change", aplicarFiltros)
-
 
 filtroLiga.addEventListener("change", () => {
   cargarEquipos(filtroLiga.value)
@@ -121,20 +117,33 @@ filtroLiga.addEventListener("change", () => {
 agregarEquipoForm.addEventListener("submit", (event) => {
   event.preventDefault()
 
-  const nuevoEquipo = {
-    strTeam: event.target.nombre.value,
-    strStadium: event.target.estadio.value,
-    intFormedYear: "-",
-    strBadge: "",   
-    strCountry: event.target.pais.value
+  // 1. Uso de un if para el archivo en lugar de la función interna
+  if (archivoImagen.files[0]) {
+    const lector = new FileReader()
+    lector.onload = (e) => {
+      equipos.push({
+        strTeam: event.target.nombre.value,
+        strStadium: event.target.estadio.value,
+        intFormedYear: "-",
+        strBadge: e.target.result,
+        strCountry: event.target.pais.value
+      })
+      aplicarFiltros()
+      event.target.reset()
+    }
+    lector.readAsDataURL(archivoImagen.files[0])
+  } else {
+    equipos.push({
+      strTeam: event.target.nombre.value,
+      strStadium: event.target.estadio.value,
+      intFormedYear: "-",
+      strBadge: "",
+      strCountry: event.target.pais.value
+    })
+    aplicarFiltros()
+    event.target.reset()
   }
-
-  equipos.push(nuevoEquipo)
-  aplicarFiltros()
-  event.target.reset()
 })
-
-
 
 llenarLigas()
 cargarEquipos(filtroLiga.value)

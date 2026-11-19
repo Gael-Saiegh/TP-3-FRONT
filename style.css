@@ -86,6 +86,8 @@ header {
   background: #2a9b42;
   background: linear-gradient(146deg, rgba(42, 155, 66, 1) 0%, rgba(62, 222, 97, 1) 100%);
   padding: 1rem;
+  max-width: 10rem;
+  max-height: 15rem;
   border-radius: 0.5rem;
   border-color: black;
   border-style: double;
