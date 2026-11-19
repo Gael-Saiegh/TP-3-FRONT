@@ -1,5 +1,5 @@
 const URL_BASE = "https://www.thesportsdb.com/api/v1/json/"
-const CLAVE = "123"   /* esta es la clave de la api *//
+const CLAVE = "123"   /* esta es la clave de la api */
 let equipos = []    
 const ligas = {
   "Premier League": "English Premier League",
