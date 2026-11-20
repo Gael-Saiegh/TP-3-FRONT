@@ -1,4 +1,4 @@
-/* la pagina ocupa la pantalla y no scrollea */
+
 body {
   box-sizing: border-box;
   height: 100vh;
@@ -20,7 +20,11 @@ header {
   flex-wrap: wrap;
 }
 
-/* caja del buscador con la lupa adentro */
+.navbar { 
+  width: 120%; 
+  margin: 0 auto;
+  background-color: white;
+}
 .buscador-caja {
   position: relative;
   display: flex;
@@ -60,12 +64,11 @@ header {
   margin: 0;
 }
 
-/* si el mensaje esta vacio no ocupa espacio */
 .mensaje:empty {
   display: none;
 }
 
-/* la lista ocupa el espacio que sobra y scrollea por dentro */
+
 .equipos-container {
   flex: 1;
   min-height: 0;
@@ -94,11 +97,10 @@ header {
   box-shadow: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.2);
   text-align: center;
   
-  /* Para que el logo de la liga se posicione respecto a la tarjeta */
   position: relative; 
 }
 
-/* Estilo para el logo de la liga */
+
 .card .logo-liga {
   width: 2.5rem;
   height: 2.5rem;
@@ -107,7 +109,6 @@ header {
   opacity: 0.9;
 }
 
-/* Estilo para el escudo del equipo */
 .card .escudo-equipo {
   width: 3.75rem;
   height: 3.75rem;
@@ -128,7 +129,7 @@ header {
   font-size: 0.9rem;
 }
 
-/* formulario rectangular y ancho */
+
 .agregar-equipo {
   box-sizing: border-box;
   width: 100%;
@@ -148,7 +149,7 @@ header {
   font-size: 1.1rem;
 }
 
-/* los 3 campos y el boton van en una fila; si no entran, bajan solos */
+
 .agregar-equipo form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
@@ -156,7 +157,6 @@ header {
   gap: 0.75rem;
 }
 
-/* cada etiqueta queda arriba de su campo */
 .campo {
   display: flex;
   flex-direction: column;
